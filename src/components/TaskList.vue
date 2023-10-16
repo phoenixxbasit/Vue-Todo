@@ -33,7 +33,8 @@ export default {
       task: {
         title: "",
         description: "",
-        completed: false
+        completed: false,
+        user: 0
       },
       tasks: [],
       mode: "C"
@@ -41,12 +42,16 @@ export default {
   },
 
   mounted() {
-    fetch("https://hvturufdwahrwbcywqbz.supabase.co/rest/v1/tasks?select=*", {
-      headers: {
-        apikey: import.meta.env.VITE_SUPABASE_API,
-        Authorization: import.meta.env.VITE_SUPABASE_AUTHORIZATION
+    this.task.user = JSON.parse(localStorage.getItem("Auth")).id;
+    fetch(
+      `https://hvturufdwahrwbcywqbz.supabase.co/rest/v1/tasks?user=eq.${this.task.user}&select=*`,
+      {
+        headers: {
+          apikey: import.meta.env.VITE_SUPABASE_API,
+          Authorization: import.meta.env.VITE_SUPABASE_AUTHORIZATION
+        }
       }
-    })
+    )
       .then((res) => res.json())
       .then((data) => (this.tasks = data))
       .catch((err) => console.log(err.message));

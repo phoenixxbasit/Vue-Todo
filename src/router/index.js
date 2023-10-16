@@ -7,17 +7,34 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: HomeView
+      component: HomeView,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: () => import("../views/RegisterView.vue")
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("../views/LoginView.vue")
     }
-    // {
-    //   path: "/about",
-    //   name: "about",
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import("../views/AboutView.vue")
-    // }
   ]
+});
+
+router.beforeEach((to) => {
+  // instead of having to check every route record with
+  // to.matched.some(record => record.meta.requiresAuth)
+  if (to.meta.requiresAuth && !localStorage.getItem("Auth")) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    return {
+      path: "/login",
+      // save the location we were at to come back later
+      query: { redirect: to.fullPath }
+    };
+  }
 });
 
 export default router;
