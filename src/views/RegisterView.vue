@@ -48,6 +48,7 @@ export default {
           headers: {
             apikey: import.meta.env.VITE_SUPABASE_API,
             Authorization: import.meta.env.VITE_SUPABASE_AUTHORIZATION,
+            prefer: "return=representation",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -60,17 +61,14 @@ export default {
             if (!res.ok) {
               throw new Error("Network response was not ok");
             }
-            localStorage.setItem("Auth", JSON.stringify({
-            name: this.name,
-            email: this.email,
-            password: this.password
-          }));
+            return res.json();
+          })
+          .then((data) => {
+            localStorage.setItem("Auth", JSON.stringify(data[0]));
             this.$router.push("/");
           })
-          
           .catch((err) => {
             console.error("Error:", err);
-            // Handle other errors, e.g., show an error message to the user
           });
       }
     }
