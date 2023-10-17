@@ -28,7 +28,8 @@ export default {
       this.show = !this.show;
     },
     taskDelete() {
-      fetch(`https://hvturufdwahrwbcywqbz.supabase.co/rest/v1/tasks?id=eq.${this.task.id}`, {
+      console.log(this.task.user);
+      fetch(`https://hvturufdwahrwbcywqbz.supabase.co/rest/v1/tasks?id=eq.${this.task.user}`, {
         method: "DELETE",
         headers: {
           apikey: import.meta.env.VITE_SUPABASE_API,

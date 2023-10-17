@@ -8,6 +8,7 @@
       <input type="password" v-model="password" id="password" name="password" />
 
       <button type="submit">Submit</button>
+      <button @click.left="navigateToRegister" class="register">Register</button>
 
       <p v-if="showerror">{{ message }}</p>
     </form>
@@ -31,6 +32,10 @@ export default {
       }, 2000);
     },
 
+    navigateToRegister() {
+      this.$router.push({ name: "register" });
+    },
+
     submit() {
       fetch(
         `https://hvturufdwahrwbcywqbz.supabase.co/rest/v1/users?email=eq.${this.email}&select=*`,
@@ -43,7 +48,6 @@ export default {
       )
         .then((res) => res.json())
         .then((data) => {
-          // console.log(data[0])
           if (data.lenth == 0 || this.password != data[0]?.password) {
             this.showerror = true;
             this.message = "Email or Password is Incorrect";
@@ -94,5 +98,18 @@ button[type="submit"] {
 }
 p {
   color: red;
+}
+
+.register {
+  background: hsla(160, 100%, 37%, 1);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  position: fixed;
+  width: 10%;
+  top: 10px;
+  right: 10px;
 }
 </style>

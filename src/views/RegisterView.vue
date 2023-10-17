@@ -37,39 +37,70 @@ export default {
       }, 2000);
     },
 
-    submit() {
+    async checkDuplicate() {
+      try {
+        const response = await fetch(
+          `https://hvturufdwahrwbcywqbz.supabase.co/rest/v1/users?email=eq.${this.email}&select=*`,
+          {
+            headers: {
+              apikey: import.meta.env.VITE_SUPABASE_API,
+              Authorization: import.meta.env.VITE_SUPABASE_AUTHORIZATION
+            }
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        if (data.length !== 0) {
+          this.showerror = true;
+          this.message = "Email Already Exists";
+          return true;
+        }
+        return false;
+      } catch (error) {
+        console.error("Error:", error);
+        return false; // Return false on error
+      }
+    },
+    async submit() {
       if (this.password !== this.cpassword) {
         this.showerror = true;
-        this.message = "Email or Password is Incorrect";
+        this.message = "Passwords do not match";
         this.reset();
       } else {
-        fetch("https://hvturufdwahrwbcywqbz.supabase.co/rest/v1/users", {
-          method: "POST",
-          headers: {
-            apikey: import.meta.env.VITE_SUPABASE_API,
-            Authorization: import.meta.env.VITE_SUPABASE_AUTHORIZATION,
-            prefer: "return=representation",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            name: this.name,
-            email: this.email,
-            password: this.password
-          })
-        })
-          .then((res) => {
-            if (!res.ok) {
+        try {
+          const isDuplicate = await this.checkDuplicate();
+
+          if (!isDuplicate) {
+            const response = await fetch("https://hvturufdwahrwbcywqbz.supabase.co/rest/v1/users", {
+              method: "POST",
+              headers: {
+                apikey: import.meta.env.VITE_SUPABASE_API,
+                Authorization: import.meta.env.VITE_SUPABASE_AUTHORIZATION,
+                prefer: "return=representation",
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                name: this.name,
+                email: this.email,
+                password: this.password
+              })
+            });
+
+            if (!response.ok) {
               throw new Error("Network response was not ok");
             }
-            return res.json();
-          })
-          .then((data) => {
+
+            const data = await response.json();
             localStorage.setItem("Auth", JSON.stringify(data[0]));
             this.$router.push("/");
-          })
-          .catch((err) => {
-            console.error("Error:", err);
-          });
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
       }
     }
   }
