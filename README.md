@@ -1,39 +1,42 @@
-# todolist
+# Vue Todo List
 
-This template should help get you started developing with Vue 3 in Vite.
+## Overview
 
-## Recommended IDE Setup
+This project is a Todo List application built with Vue.js, Tailwind CSS, and Supabase. It enables users to manage tasks with functionalities for creating, updating, and deleting tasks.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Technologies Used
 
-## Customize configuration
+- **Vue.js**: A progressive JavaScript framework for building user interfaces.
+- **Tailwind CSS**: A utility-first CSS framework for building responsive and modern designs.
+- **Supabase**: An open-source alternative to Firebase, Supabase provides a database backend for storing tasks.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+The `AddTask` component handles the creation and display of tasks. It includes a form for adding new tasks and a list to display existing tasks. The component leverages Supabase for task storage.
 
-## Project Setup
+### Features:
 
-```sh
-npm install
-```
+- Form for creating or updating tasks.
+- Display of the task list.
+- Tasks fetched from Supabase on component mount.
 
-### Compile and Hot-Reload for Development
+### Installation and Running Locally
 
-```sh
-npm run dev
-```
+1. **Clone the repository:**
 
-### Compile and Minify for Production
+   ```bash
+   git clone https://github.com/your-username/vue-todo-list.git
+   cd vue-todo-list
+   ```
 
-```sh
-npm run build
-```
+2. **Install Dependencies:**
 
-### Lint with [ESLint](https://eslint.org/)
+   ```bash
+   npm install
+   ```
 
-```sh
-npm run lint
-```
+3. **Run Locally:**
 
-```
-mfredizance@hexv.com
-```
+   ```bash
+   npm run dev
+   ```
+
+   Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
