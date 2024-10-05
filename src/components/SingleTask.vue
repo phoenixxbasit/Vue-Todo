@@ -58,7 +58,7 @@ export default {
   padding: 10px;
   margin-bottom: 10px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.3s;
 }
 
 .main-task:hover {
